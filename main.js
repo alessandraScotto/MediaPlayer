@@ -11,13 +11,22 @@ let tracks = [
     { 'url': './audio/song-10.mp3', 'cover': './cover/cover-10.jpg', 'artist': 'Ghostrifter', 'title': 'Simplicit Nights' }
 ];
 
+//Catturiamo il contenitore padre
 let wrapper = document.querySelector('#wrapper');
+
+//Impostiamo l'indice di partenza a 0
 let i = 0;
+
+// Funzione che ci permette di convertire un range di valori in un altro
+function mapRangeValue(x, in_min, in_max, out_min, out_max) {
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+} 
+
 //Sezione audio e cover
 function createCover() {
     wrapper.innerHTML = '';
     let div = document.createElement('div');
-    div.classList.add('col-12', 'col-md-4');
+    div.classList.add('col-12', 'col-md-4', 'd-flex', 'justify-content-center','justify-content-md-start','mb-4');
     div.innerHTML = ` 
         <img class="coverImg" src="${tracks[i].cover}" alt="Img cover">
         <audio preload="metadata">
@@ -38,13 +47,13 @@ function createInfoTrack() {
   <h3 class="fontMain">${tracks[i].artist}</h3>
    </div>
    <div class="progress">
-  <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25"
+  <div class="progress-bar" role="progressbar" aria-valuenow="25"
       aria-valuemin="0" aria-valuemax="100"></div>
   </div>
   <!-- Tempo Inizio e Fine -->
   <div class="d-flex justify-content-between">
-  <p id="start" class="text-white fw-semibold">0:00</p>
-  <p id="end" class="text-white fw-semibold"></p>
+  <p id="start" class="text-white small fontMain">00:00</p>
+  <p id="end" class="text-white small fontMain"></p>
   </div>
 
   <!-- Sezione Pulsanti AUDIO -->
@@ -132,6 +141,13 @@ function createInfoTrack() {
             seconds = '0' + String(seconds);
         };
         start.innerHTML = `${minutes}:${seconds}`;
+
+
+        // Catturare la Progress Bar
+        let progressBar = document.querySelector('.progress-bar');
+
+        // currentTime, startTime, endTime, startProgress, endProgress
+        progressBar.style.width = `${mapRangeValue(audio.currentTime, 0, audio.duration, 0, 100)}%`;
 
     })
 

@@ -6,12 +6,12 @@
 
 .coverImg {
     border-radius: 50%;
-    width: 400px;
-    height: 400px;
+    width: 80%;
+    height: 50vh;
 }
 
 .progress-bar {
-    background-color: rgba(140, 40, 7, 0.856);
+    background-color: rgba(191, 52, 6, 0.856);
 }
 
 .fontMain {
