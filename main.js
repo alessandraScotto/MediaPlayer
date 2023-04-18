@@ -44,7 +44,7 @@ function createInfoTrack() {
   <!-- Tempo Inizio e Fine -->
   <div class="d-flex justify-content-between">
   <p id="start" class="text-white fw-semibold">0:00</p>
-  <p id="end" class="text-white fw-semibold">00.00</p>
+  <p id="end" class="text-white fw-semibold"></p>
   </div>
 
   <!-- Sezione Pulsanti AUDIO -->
@@ -80,26 +80,60 @@ function createInfoTrack() {
 
     //Funzione Next song
     btnForward.addEventListener('click', () => {
-       if (i < tracks.length - 1) {
-        i++
-        createCover();
-        createInfoTrack();        
-       } else {
-        i = 0;
-       }
+        if (i < tracks.length - 1) {
+            i++
+            createCover();
+            createInfoTrack();
+        } else {
+            i = 0;
+        }
     });
 
     //Funzione Backward song
     btnBackward.addEventListener('click', () => {
-      if (i > 0) {
-        i--;
-       createCover();
-       createInfoTrack();  
-      } else {
-        i = tracks.length - 1;
-      }
+        if (i > 0) {
+            i--;
+            createCover();
+            createInfoTrack();
+        } else {
+            i = tracks.length - 1;
+        }
+    });
+
+    //Funzione metadata audio
+    let end = document.querySelector('#end');
+    audio.addEventListener('loadedmetadata', () => {
+        let minutes = parseInt(audio.duration / 60, 10);
+        let seconds = parseInt(audio.duration % 60);
+
+        //Gestione dei minuti e secondi
+        if (minutes < 10) {
+            minutes = '0' + String(minutes);
+        };
+        if (seconds < 10) {
+            seconds = '0' + String(seconds);
+
+        };
+        end.innerHTML = `${minutes} : ${seconds}`;
+
     })
 
+    //Il tempo che passa durante la canzone
+    let start = document.querySelector('#start');
+    audio.addEventListener('timeupdate', () => {
+        let minutes = Math.floor(audio.currentTime / 60);
+        let seconds = Math.floor(audio.currentTime % 60);
+
+        //Gestione dei minuti e secondi
+        if (minutes < 10) {
+            minutes = '0' + String(minutes);
+        };
+        if (seconds < 10) {
+            seconds = '0' + String(seconds);
+        };
+        start.innerHTML = `${minutes}:${seconds}`;
+
+    })
 
 
 
